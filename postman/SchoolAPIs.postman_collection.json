@@ -1,0 +1,67 @@
+{
+  "info": {
+    "name": "School APIs (Node + Express + MySQL)",
+    "_postman_id": "c5a6a6e8-f9b4-4c3b-9f1b-1234567890ab",
+    "description": "Add schools and list them sorted by distance using Haversine formula.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000" },
+    { "key": "lat", "value": "19.0760" },
+    { "key": "lon", "value": "72.8777" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/health"
+      }
+    },
+    {
+      "name": "Add School",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Oxford Public School\",\n  \"address\": \"221B Baker Street, City\",\n  \"latitude\": 19.2183,\n  \"longitude\": 72.9781\n}"
+        },
+        "url": "{{base_url}}/addSchool"
+      },
+      "response": [
+        {
+          "name": "201 Created",
+          "originalRequest": { "method": "POST", "url": "{{base_url}}/addSchool" },
+          "status": "Created",
+          "code": 201,
+          "body": "{\n  \"success\": true,\n  \"message\": \"School added successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Oxford Public School\",\n    \"address\": \"221B Baker Street, City\",\n    \"latitude\": 19.2183,\n    \"longitude\": 72.9781\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "List Schools (sorted by distance)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/listSchools?latitude={{lat}}&longitude={{lon}}",
+          "host": ["{{base_url}}"],
+          "path": ["listSchools"],
+          "query": [
+            { "key": "latitude", "value": "{{lat}}" },
+            { "key": "longitude", "value": "{{lon}}" }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": { "method": "GET", "url": "{{base_url}}/listSchools?latitude=19.0760&longitude=72.8777" },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"count\": 2,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Oxford Public School\",\n      \"address\": \"221B Baker Street, City\",\n      \"latitude\": 19.2183,\n      \"longitude\": 72.9781,\n      \"distanceKm\": 19.234\n    }\n  ]\n}"
+        }
+      ]
+    }
+  ]
+}
